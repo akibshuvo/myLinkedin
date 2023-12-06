@@ -173,8 +173,8 @@ const Home = () => {
 
       </div>  
     </div>
-    <h1>akib</h1>
-    <p>sik</p>
+    
+    
     </>
   )
 }

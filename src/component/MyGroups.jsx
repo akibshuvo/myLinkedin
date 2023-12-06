@@ -42,7 +42,7 @@ const styless = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 950,
+  width: 600,
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
@@ -57,7 +57,7 @@ const MyGroups = () => {
   const handleClose = () => setOpen(false);
 
   const [opens, setOpens] = useState(false);
-  const handleOpens = () => setOpens(true);
+  // const handleOpens = () => setOpens(true);
   const handleCloses = () => setOpens(false);
 
   const [openss, setOpenss] = useState(false);
@@ -69,6 +69,8 @@ const MyGroups = () => {
   let [myFriendsArr, setmyFriendsarr] = useState([])
   let [memberArr, setMemberArr] = useState([])
   let [memberListArr, setMemberListarr] = useState([])
+
+  let [memGroupId, setMemGroupId] = useState("")
 
   let userInfo = useSelector(state=>state.logedUser.value)
   let dispatch = useDispatch()
@@ -102,7 +104,7 @@ const MyGroups = () => {
 });
   },[])
 
- 
+ console.log(memGroupId,"youuuu")
 
   useEffect(()=>{
     const friendRef = ref(db, 'myFriends');
@@ -119,36 +121,24 @@ const MyGroups = () => {
     });
   },[])
 
-  useEffect(()=>{
-    const memberRef = ref(db, 'memberList');
-onValue(memberRef, (snapshot) => {
-  let arr = []
-  snapshot.forEach(item=>{
-    if(item.val().whoAccept == userInfo.uid ){
-      arr.push({...item.val(), reqId: item.key})
-    }
-    
-  })
+  // useEffect(()=>{
 
-  setMemberListarr(arr)
-});
-  },[])
+  // },[])
 
-  let handleAddGroups = (item,)=>{
-    set(push(ref(db, 'groupMember')), {
-      adminName: userInfo.displayName,
-      adminId: userInfo.email,
+  // let handleAddGroups = (item,)=>{
+  //   set(push(ref(db, 'groupMember')), {
+  //     adminName: userInfo.displayName,
+  //     adminId: userInfo.email,
 
-      joinPeopleName: item.acceptName,
-      joinPeopleid: item.acceptId,
+  //     joinPeopleName: item.acceptName,
+  //     joinPeopleid: item.acceptId,
       
-    });
-    console.log(item);
-  }
+  //   });
+  //   console.log(item);
+  // }
 
 
   let handleOpenss = (item)=>{
-    
 
       const reqRef = ref(db, 'reqGroups');
       onValue(reqRef, (snapshot) => {
@@ -160,13 +150,12 @@ onValue(memberRef, (snapshot) => {
       })
 
       setMemberArr(arr)
+      setMemGroupId(item.groupId)
 });
 setOpenss(true);
   }
 
   let handleAcppetgroup = (item)=>{
-     
-
     console.log(item,"ssssssssooooo")
       set(push(ref(db, 'memberList')), {
        whoAccept: userInfo.uid,
@@ -177,9 +166,33 @@ setOpenss(true);
        groupsId: item.groupId 
 
       })
-      // .then(()=>{
-      //   remove(ref(db,'reqGroups/'+ item.reqId))
-      // })
+      .then(()=>{
+        remove(ref(db,'reqGroups/'+ item.reqId))
+      })
+  }
+
+
+  let handleOpens = (item)=>{
+    console.log(item.groupId, "cheack")
+    const memberRef = ref(db, 'memberList');
+    onValue(memberRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(items=>{
+        
+        if(items.val().groupsId == item.groupId && userInfo.uid == items.val().whoAccept){
+          arr.push({...items.val(), memberIdss: items.key})
+        }
+
+        console.log(items.val(),"member anchi")
+
+        
+        
+        
+      })
+    
+      setMemberListarr(arr)
+    });
+    setOpens(true)
   }
   
 
@@ -232,8 +245,8 @@ setOpenss(true);
 
        
         <div className='allBtn'>
-        <Button onClick={handleOpens} className='mgsBtn' variant="contained">Add people</Button>
-        <Button onClick={()=>handleOpenss(item)} color='info' variant="contained">Members</Button>
+        <Button onClick={()=>handleOpens(item)} className='mgsBtn' variant="contained">member</Button>
+        <Button onClick={()=>handleOpenss(item)} color='info' variant="contained">req list</Button>
         <Button color='error' variant="contained">Delete</Button>
         </div>
         </div>
@@ -247,26 +260,30 @@ setOpenss(true);
         aria-describedby="modal-modal-description"
       >
         <Box sx={styles}>
-          <h1>Add friends</h1>
-        {myFriendsArr.map(items=>(
-          <>
+        <h1>Groups Member</h1>
+
+          {memberListArr.map(item=>(
+            <>
           
-          <div className='oneFriend'>
+            <div className='oneFriend'>
+              
+            <div className='imgName'>
+                <Image src={man}/>
+                <div>
+                <h3>{item.reqPeopleName}</h3>
+                <p>Apps Developer</p>
+                </div>
+            </div>
+            <div className='allBtn'>
+            <Button color='error' variant="contained">remove</Button>
             
-          <div className='imgName'>
-              <Image src={man}/>
-              <div>
-              <h3>{userInfo.uid == items.acceptId?items.myFriendsName:items.acceptName}</h3>
-              <p>Apps Developer</p>
-              </div>
-          </div>
-          <div className='allBtn'>
-          <Button onClick={()=>handleAddGroups(items)} className='mgsBtn' variant="contained">Add</Button>
+            </div>
+            </div>
+            </>
+          ))}
+        
           
-          </div>
-          </div>
-          </>
-         ))}
+         
          
           
         </Box>
@@ -307,14 +324,14 @@ setOpenss(true);
           </div>
 
 
-      <div>
+      {/* <div>
         <h2>Member List</h2>
         {memberListArr.map(items=>(
             <div className='reqgroupss'>
             <div className='imgName'>
                 <Image src={man}/>
                 <div>
-                <h3>{items.whoReqName}</h3>
+                <h3>{items.reqPeopleName}</h3>
                 <p>Apps Developer</p>
                 </div>
             </div>
@@ -325,7 +342,7 @@ setOpenss(true);
             </div>
         ))}
           
-          </div>
+          </div> */}
 
           
 

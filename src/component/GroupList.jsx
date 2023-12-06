@@ -54,7 +54,7 @@ const GroupList = () => {
       whoReqName: userInfo.displayName,
       whoReqId: userInfo.uid
     });
-    console.log("yoyo", item)
+    
   
   }
 

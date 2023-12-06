@@ -1036,8 +1036,9 @@ line-height: 150%; /* 21px */
 .reqgroupss{
     display: flex;
     align-items: center;
-    column-gap: 30px;
+    /* column-gap: 30px; */
     position: relative;
+    justify-content: space-between;
     
 }
 
@@ -1052,20 +1053,20 @@ line-height: 150%; /* 21px */
 
 .reqAndMember{
     width: 100%;
-    display: flex;
+    /* display: flex; */
     position: relative;
    padding: 0 10px;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
-.reqAndMember::after{
+/* .reqAndMember::after{
     content: '';
     position: absolute;
     border-left: 1px solid rgba(0, 0, 0, 0.349);
     top: 0;
     left: 55%;
     height: 100%;
-}
+} */
 
 .groupReqbtn{
     display: flex;
