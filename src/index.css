@@ -1,0 +1,1092 @@
+/* ===== common css start===== */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+ol,ul{
+    list-style-type: none;
+}
+
+:root{
+    --main_color    : #086FA4;
+    --text_color    : #11175D;
+  
+    --barlow        : 'Barlow', sans-serif;
+    --nunito        : 'Nunito', sans-serif;
+    --opens         : 'Open Sans', sans-serif;
+    --poppins       : 'Poppins', sans-serif;
+
+}
+
+/* ===== common css end===== */
+
+
+
+/* ========== RegPage css start */
+
+
+
+.regPage{
+    display: flex;
+    justify-content: center;
+    padding: 80px 0;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    
+}
+
+.pageContent{
+    width: 70%;
+}
+
+.pageContentl{
+    width: 60%;
+}
+
+.regHeading{
+    font-family: var(--nunito);
+    color: var(--text_color);
+    margin: 35px 0 12px;
+}
+
+.regP{
+    color: var(--text_color);
+    font-family: var(--nunito);
+    font-size: 20px;
+    font-weight: 300;
+}
+
+
+
+.inputs{
+    width: 100%;
+    margin-top: 50px !important;
+}
+
+.regBtn{
+    width: 100%;
+    padding: 10px 0 !important;
+    border-radius: 25px !important;
+    margin-top: 50px !important;
+    font-family: var(--nunito) !important;
+    font-size: 20px !important;
+    background: var(--main_color) !important;
+}
+
+.loginP{
+    color: var(--text_color);
+    font-family: var(--nunito);
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 30px;
+ 
+}
+
+.span{
+    color: var(--main_color);
+    font-family: var(--nunito);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+
+
+
+
+/* ========== RegPage css end */
+
+
+
+
+/* ========= Login Page css start =====*/
+
+.forget{
+    margin-top: 44px;
+    color: var(--main_color);
+    font-size: 18px;
+    font-weight: 600;
+    /* margin-right: 75%; */
+}
+
+.loginPl{
+    color: var(--text_color);
+    font-family: var(--nunito);
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 15px;
+ 
+}
+
+/* ========= Login Page css end========= */
+
+
+
+
+/* ======= forget password start ==========*/
+.forgetBox{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-color: var(--main_color);
+}
+
+.fContent{
+    height: 33%;
+    padding: 40px 50px ;
+    background: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin-top: 300px;
+    border-radius: 16px;
+    
+}
+
+.forgetHeading{
+     color: var(--text_color);
+}
+
+.forgetHeading::before{
+    content: '';
+    position: absolute;
+    width: 550px;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.15);
+    margin-top: 45px;
+}
+
+.forgetP{
+    color: var(--text_color);
+    font-family: var(--nunito);
+    margin-top: 20px;
+}
+
+.inputsf{
+    width: 100%;
+    margin-top: 45px !important;
+}
+
+.fbtn{
+    display: flex;
+    justify-content: end;
+    column-gap: 20px;
+    margin-top: 25px;
+}
+
+.forgetBtn{
+    background-color: var(--main_color) !important;
+}
+
+.googleFlex{
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.421);
+    padding: 18px 22px;
+    border-radius: 30px;
+    color: var(--text_color);
+    font-family: var(--nunito);
+    align-items: center;
+    margin-top: 40px;
+    
+}
+
+.fbgg{
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.fb{
+    color: rgba(32, 32, 250, 0.85);
+}
+
+.eyes{
+    position: absolute;
+    margin-top: 70px;
+    margin-left: -40px;
+}
+
+/* ======= forget password end ==========*/
+
+/* ========= home pages css start ======= */
+.homePage{
+    background: #F7F9FB;
+    padding-bottom: 400px;
+}
+
+
+.profileNav{
+    background-color: white;
+    padding: 10px 150px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    
+    
+}
+
+.myProfile{
+    width: 850px;
+    margin-left: 250px;
+    margin-top: 40px;
+    
+   
+}
+
+.picBio{
+    width: 850px;
+    background-color: white;
+    display: flex;
+    column-gap: 200px;
+    padding: 20px 20px 40px ;
+}
+
+.myprofilePic{
+    border-radius: 50%;
+    position: absolute;
+    top: 195px;
+    left: 270px;
+}
+
+.biosP{
+    color: #181818;
+    font-family: var(--barlow);
+    font-size: 15px;
+    padding: 10px 0px 20px;
+}
+.biosPp{
+    color: #181818;
+    font-family: var(--barlow);
+    font-size: 12px;
+    padding: 10px 0px 15px;
+}
+
+.plane{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sendIcons{
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+}
+
+.icons{
+    color: #086FA4;
+    margin-bottom: 5px;
+}
+
+.menu{
+    display: flex;
+    padding: 20px 0;
+}
+/* .menu:last-child{
+    border-top-right-radius: 20px;
+    
+} */
+
+/* .items:first-child{
+    border-bottom-left-radius: 20px;
+} */
+
+
+
+.items{
+    padding: 10px 90px;
+    background-color: white;
+    color: rgba(0, 0, 0, 0.672);
+    border: 1px solid rgba(0, 0, 0, 0.112);
+    border-bottom-left-radius: 45px;
+    border-top-right-radius: 45px;
+    margin-right: 10px;
+}
+
+.aboutContent{
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+}
+
+.aboutHeading{
+color: #181818;
+margin-bottom: 15px;
+}
+
+/* ====== projects content css start ======= */
+.projetcsContetnt{
+    background-color: white;
+    padding: 40px 40px 50px;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+.pageNumber{
+    display: flex;
+    column-gap: 25px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.projetcImg{
+    display: flex;
+    justify-content: space-between;
+}
+
+.number{
+    color: #747474;
+    font-family: var(--barlow);
+    font-weight: 400;
+}
+
+
+/* ====== projects content css end ======= */
+
+
+/* ====== experience part start ==== */
+
+.experiencePart{
+    background-color: white;
+    padding: 40px 40px 10px;
+   
+    
+}
+.box{
+    margin-top: 25px;
+    position: relative;
+   
+}
+
+.box::before{
+    content: '';
+    position: absolute;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.132);
+    width: 750px;
+    top: 55%;
+    margin-left: 6%;
+}
+
+
+.experImage{
+    display: flex;
+    column-gap: 25px;
+    margin-top: 25px;
+}
+
+.employed{
+    display: flex;
+    column-gap: 35px;
+    margin-top: 7px;
+    margin-bottom: 5px;
+    font-family: var(--barlow);
+    align-items: center;
+}
+
+.colortree{
+  color: #086FA4;
+  font-family: var(--barlow);
+  font-weight: 500;
+
+}
+
+.self{
+    color: rgba(0, 0, 0, 0.64);
+}
+
+.freelance{
+    margin-bottom: 15px;
+}
+/* ====== experience part end ==== */
+
+
+/* ======  education part etart==== */
+.eduflex{
+    display: flex;
+    column-gap: 25px;
+    margin-top: 25px;
+}
+
+.eduBox{
+    background-color: white;
+    padding: 30px 40px;
+    margin-top: 25px;
+}
+
+
+
+.edup{
+    margin: 0px 0px 20px;
+    color: #086FA4;
+}
+/* ======  education part end==== */
+
+.logout{
+    padding: 10px 350px !important;
+    background-color: #086FA4 !important;
+    /* color: black !important; */
+    /* border: 1px solid rgba(0, 0, 0, 0.589) !important; */
+    margin-top: 60px !important;
+    margin-left: 5% !important;
+}
+
+.active{
+    background-color: #0870a4;
+    color: white;  
+}
+
+
+
+
+/* ========= home pages css end ======= */
+
+
+/* ====== friends css start ===== */
+.allpage{
+    width: 100%;
+    padding: 70px 150px 5px;
+    background-color: #5196d3;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.fullBox{
+    padding: 50px 150px 50px;
+    /* background-color: rgba(0, 0, 0, 0.686); */
+   
+}
+
+
+
+.myFriend{
+    width: 100%;
+    background-color: white;
+    padding:  40px;
+    border-radius: 20px;
+    margin-top: 40px;
+    box-sizing: border-box;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.imgName{
+    display: flex;
+    column-gap: 15px;
+    margin-top: 50px;
+}
+
+.oneFriend{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    
+    
+}
+
+.oneFriend::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    top: 140px;
+}
+
+.oneFriend:last-child::before{
+  border-bottom: none;
+}
+
+
+
+.mgsBtn{
+    background-color: #086FA4 !important;
+}
+.mgsBtns{
+    color: #086FA4;
+    font-size: 22px;
+}
+
+.allBtn{
+    display: flex;
+    column-gap: 5px !important;
+    
+}
+
+.allBtns{
+    display: flex;
+    column-gap: 15px !important;
+    
+}
+
+.myfriendAndReques{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ====== friends css end ===== */
+
+
+/* ===== postBox css start ===== */
+.fullbody{
+    background-color: #F7F9FB;
+    padding: 50px 0 500px;
+    margin-top: 45px;
+    
+}
+.container{
+    
+    width: 1600px;
+    margin: auto;
+}
+
+.postAndProfile{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.contentSite{
+    width: 60%;
+    position: relative;
+}
+
+.profileContent{
+    width: 35%;
+    height: fit-content;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.ppppppp{
+    position: relative;
+}
+
+.cover{
+    width: 100%;
+}
+
+.pro{
+    width: 25%;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.proTextContent{
+    text-align: center;
+    
+}
+
+.proName{
+   padding: 80px 0 15px;
+}
+
+.proP{
+    padding: 0 80px 40px;
+    color: #181818;
+    text-align: center;
+    font-family: var(--barlow);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 15px */
+
+}
+
+.postBox{
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.postBox::before{
+    content: '';
+    width: 93%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.127);
+    position: absolute;
+    margin-top: 40px;
+}
+
+.postinput{
+    padding: 30px 0 20px;
+    margin-top: 30px;
+    width: 50%;
+    border: none;
+    outline: none;
+}
+
+.inputBtn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.iconsSend{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 25px;
+    align-items: center;
+}
+
+.senIcons{
+    /* background-color: #086FA4; */
+    color: white;
+}
+
+.iconBg{
+ background-color: #086FA4;
+ padding: 10px 12px 8px;
+ border-radius: 5px;
+ 
+}
+
+.postinput::placeholder{
+    color: rgba(24, 24, 24, 0.451);
+    font-family: var(--barlow);
+    font-size: 18px;
+    
+    font-weight: 400;
+
+}
+
+.postShowBox{
+    /* padding: 30px 40px; */
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-top: 40px;
+   
+}
+
+.postshowcontent{
+    background-color: red;
+   
+}
+
+.groupCreate{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* ===== postBox css end ===== */
+
+
+.frndAndmgs{
+    padding: 25px 30px 20px;
+    background-color: #086FA4;
+    /* background-color: #F7F9FB; */
+}
+
+.boxx{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 120px;
+}
+
+.mgsList{
+   width: fit-content;
+
+   /* background-color: green; */
+    
+}
+
+
+
+.mgsgsbox{
+    width: 40%;
+    height: 89vh;
+    background-color: white;
+    margin-right: 200px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+
+.textMgs{
+    width: 100%;
+    padding: 30px 40px;
+    height: 80%;
+    overflow-y: scroll;
+    
+}
+
+
+
+.nameAndProfile{
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+}
+
+
+
+.prsize{
+    width: 20%;
+}
+
+.mgsNav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+}
+
+.mgsnavpadding{
+    padding: 30px 40px 12px;
+    position: relative;
+}
+
+.mgsnavpadding::after{
+    content: '';
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.215);
+    position: absolute;
+    top: 86px;
+    left: 0;
+}
+
+
+
+.callIcon{
+    margin-right: 30px;
+    font-size: 28px;
+    color: #086FA4;
+}
+
+.callIcons{
+    font-size: 28px;
+    color: #086FA4;
+}
+
+.prsizesss{
+    width: 15%;
+    margin-left: 50%;
+    transform: translatex(-50%);
+    
+}
+
+.prsizes{
+    margin-top: 10px;
+    text-align: center;
+    padding: 0px 80px;
+    font-family: var(--barlow);
+    font-weight: 300;
+    
+  }
+.prsiz{
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.787);
+    
+  }
+
+  .sendmgs p{
+    background-color: #086FA4;
+    display: inline-block;
+    color: white;
+    padding: 10px 12px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 12px;
+    margin-top: 28px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+  .sendmgs{
+    display: flex;
+    justify-content: end;
+    
+}
+
+
+  .recivedMgs p{
+    background-color: rgba(0, 0, 0, 0.207);
+    display: inline-block;
+    color: black;
+    padding: 10px 12px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 12px;
+    margin-top: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.activeago{
+    font-family: var(--barlow);
+}
+
+.namedis{
+  font-size: 18px;  
+}
+
+
+
+/* ====== input css start */
+
+.inputMgs{
+    padding: 23px 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    align-items: center;
+    position: relative;
+    color: #086FA4;
+}
+
+.inputMgs::after{
+content: '';
+position: absolute;
+border-top: 1px solid rgba(0, 0, 0, 0.214);
+width: 100%;
+top: 0;
+left: 0;
+}
+
+.sendMgsInput{
+    width: 65%;
+    padding: 10px 20px;
+    border:  1px solid rgba(0, 0, 0, 0.544);
+}
+
+.emojiGlass{
+    color: #086FA4;
+}
+/* ====== input css start */
+
+
+/* === post show ul li start */
+.postboxx{
+    width: 100%;
+    padding: 30px 40px;
+    background-color: white;
+    margin-top: 40px;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    position: relative;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    
+}
+
+.sathe{
+    position: absolute;
+
+}
+
+.postboxx::after{
+    position: absolute;
+    content: "";
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.135);
+    top: 50px;
+    left: 0;
+}
+
+.ed{
+    display: flex;
+    justify-content: end;
+    column-gap: 20px;
+    font-size: 20px;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    color: #086FA4;
+
+}
+
+.deletecolor{
+    /* background-color: #086FA4; */
+    color: black;
+}
+
+.postImge{
+    width: 7%;
+    
+}
+
+.nameimagePost{
+    display: flex;
+    margin-top: 35px;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.postnamem{
+color: #181818;
+font-family: var(--barlow);
+font-size: 17px;
+font-style: normal;
+font-weight: 700;
+}
+
+.postPP{
+    color: #181818;
+font-family: var(--barlow);
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+}
+
+.postpublic{
+    padding: 10px 0 30px;
+    color: #181818;
+
+font-family: var(--barlow);
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; /* 21px */
+}
+
+.likeDisIcons{
+    display: flex;
+    justify-content: end;
+    column-gap: 20px;
+    align-items: center;
+    font-size: 22px;
+
+}
+
+.deleteEditDiv{
+    width: 200px;
+    /*height: 30px;
+    */padding: 20px 30px;
+    background-color: white;
+    position: absolute;
+    right: 30px;
+    top: 55px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    
+}
+
+
+.showIcon{
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+    
+}
+
+.showIcon::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 52px;
+    left: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.185);
+}
+
+.showIcons{
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.editBtn{
+    background-color: #086FA4 !important;
+}
+
+.groupCreateBtn{
+    display: flex;
+    justify-content: end;
+    column-gap: 10px;
+    margin-top: 20px !important;
+}
+
+.inputGroup{
+    width: 100%;
+}
+
+.createggg{
+    background-color: #086FA4 !important;
+}
+
+.fbtnclor{
+    color: #11175D;
+    font-size: 28px;
+    margin-right: 20px;
+}
+
+
+.reqgroupss{
+    display: flex;
+    align-items: center;
+    column-gap: 30px;
+    position: relative;
+    
+}
+
+.reqgroupss::after{
+    content: '';
+    position: absolute;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.158);
+    top: 135px;
+    left: 0;
+    width: 100%;
+}
+
+.reqAndMember{
+    width: 100%;
+    display: flex;
+    position: relative;
+   padding: 0 10px;
+    justify-content: space-between;
+}
+
+.reqAndMember::after{
+    content: '';
+    position: absolute;
+    border-left: 1px solid rgba(0, 0, 0, 0.349);
+    top: 0;
+    left: 55%;
+    height: 100%;
+}
+
+.groupReqbtn{
+    display: flex;
+    column-gap: 10px;
+    margin-left: 20px;
+}
+
+.remove{
+    font-size: 25px;
+    margin-left: 60px;
+    color: black;
+}
+
+.acceptgroup{
+    background-color: #086FA4 !important;
+}
+
+
+
+/* === post show ul li end */
+  
+
+
+
