@@ -696,12 +696,20 @@ margin-bottom: 15px;
 
 .boxx{
     display: flex;
-    justify-content: space-between;
-    padding: 0 120px;
+    
+    
+}
+
+.gandf{
+    width: 50%;
+    
 }
 
 .mgsList{
-   width: fit-content;
+   width: 70%;
+   
+  
+  
 
    /* background-color: green; */
     
@@ -710,6 +718,7 @@ margin-bottom: 15px;
 
 
 .mgsgsbox{
+    position: relative;
     width: 40%;
     height: 89vh;
     background-color: white;
@@ -729,6 +738,7 @@ margin-bottom: 15px;
     overflow-y: scroll;
     
 }
+
 
 
 
@@ -807,7 +817,7 @@ margin-bottom: 15px;
     color: white;
     padding: 10px 12px;
     border-top-right-radius: 10px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
     border-top-left-radius: 12px;
     margin-top: 28px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -877,16 +887,14 @@ left: 0;
 /* === post show ul li start */
 .postboxx{
     width: 100%;
-    padding: 30px 40px;
+    padding: 30px 30px;
     background-color: white;
     margin-top: 40px;
     border-radius: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     position: relative;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
+    
+    
     
 }
 
@@ -1083,6 +1091,55 @@ line-height: 150%; /* 21px */
 .acceptgroup{
     background-color: #086FA4 !important;
 }
+
+
+.recivedMgs img{
+    width: 300px;
+    height: 350px;
+    object-fit: cover;
+    border: 2px solid black; 
+    margin-bottom: 20px;
+}
+
+
+.sendmgs img{
+    width: 300px;
+    height: 350px;
+    object-fit: cover;
+    border: 3px solid #086FA4; 
+    margin-bottom: 20px;
+}
+
+.sendAudio{
+    display: flex;
+    justify-content: end;
+    margin: 20px 0;
+}
+
+.recivedAudio{
+    margin: 20px 0;
+}
+
+.sendvideo{
+    display: flex;
+    justify-content: end;
+    margin: 20px 0;
+}
+
+.recivedvideo{
+   margin: 20px 0;
+}
+
+.emoji{
+    position: absolute;
+    top: 320px;
+    right: 50px;
+}
+
+
+
+
+
 
 
 

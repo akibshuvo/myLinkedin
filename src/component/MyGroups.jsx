@@ -194,6 +194,14 @@ setOpenss(true);
     });
     setOpens(true)
   }
+
+  let handleAccpetDelete = (item)=>{
+    remove(ref(db,'reqGroups/'+ item.reqId))
+  }
+
+  let handleRemoveMember = (item)=>{
+    remove(ref(db,'memberList/'+ item.memberIdss))
+  }
   
 
   
@@ -275,7 +283,7 @@ setOpenss(true);
                 </div>
             </div>
             <div className='allBtn'>
-            <Button color='error' variant="contained">remove</Button>
+            <Button onClick={()=>handleRemoveMember(item)} color='error' variant="contained">remove</Button>
             
             </div>
             </div>
@@ -315,7 +323,7 @@ setOpenss(true);
            </div>
            <div className='groupReqbtn'>
            <Button onClick={()=>handleAcppetgroup(item)} className='acceptgroup' variant="contained">Accept</Button>
-           <Button color='error' variant="contained">Delete</Button>
+           <Button onClick={()=>handleAccpetDelete(item)} color='error' variant="contained">Delete</Button>
            </div>
            </div>
         ))}
