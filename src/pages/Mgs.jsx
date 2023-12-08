@@ -17,50 +17,85 @@ import msd from '../assets/msg.png'
 import ModalImage from "react-modal-image";
 import EmojiPicker from 'emoji-picker-react';
 
+import { getStorage, ref as imgref,getDownloadURL,uploadBytes } from "firebase/storage";
+
+
+
+
 
 const Mgs = () => {
   const db = getDatabase();
+  const storage = getStorage();
+
 
 
   let userInfo = useSelector(state => state.activeChat.value)
+
   let data = useSelector(state=> state.logedUser.value)
+
 
   let [mgs,setMgs] = useState("")
   let [mgsArr, setMgsArr] = useState([])
   let [show,setshow] = useState(false)
   
   let handleSendMgs = ()=>{
-   
-    set(push(ref(db, 'massage')), {
-      whosendName: data.displayName,
-      whosendId: data.uid,
-
-      whoRecivedName: userInfo.activaChatName,
-      whoRevivedId: userInfo.activaChatid,
-      massage: mgs
-    });
-
-    
+    if(userInfo.type == 'single'){
+      set(push(ref(db, 'singleMassage')), {
+        whosendName: data.displayName,
+        whosendId: data.uid,
+  
+        whoRecivedName: userInfo.activaChatName,
+        whoRevivedId: userInfo.activaChatid,
+        massage: mgs,
+        // date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+      });
+    }else{
+      console.log("group er ta hobe")
+    }
   }
 
 
   useEffect(()=>{
     const db = getDatabase();
-    const mgsRef = ref(db, 'massage');
+    const mgsRef = ref(db, 'singleMassage');
     onValue(mgsRef, (snapshot) => {
       let arr = []
       snapshot.forEach(item=>{
-         console.log(item.val())
-         if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) || (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId)){
-           arr.push(item.val())
+         console.log(item.val(), "msssss data")
+         if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
+         || 
+        (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId)){
+           arr.push({...item.val(), msgIds: item.key})
          }
       })
 
       setMgsArr(arr)
     });
-  },[])
+  },[userInfo.activaChatid])
 
 
+  let handleFile = (e)=>{
+    console.log(e.target.files[0],"ooooo")
+    const storageRef = imgref(storage, e.target.files[0].name);
+
+    uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
+      getDownloadURL(storageRef).then((downloadURL) => {
+        if(userInfo.type == 'single'){
+          set(push(ref(db, 'singleMassage')), {
+            whosendName: data.displayName,
+            whosendId: data.uid,
+      
+            whoRecivedName: userInfo.activaChatName,
+            whoRevivedId: userInfo.activaChatid,
+            img: downloadURL,
+            // date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+          });
+        }else{
+          console.log("group er ta hobe")
+        }
+      });
+});
+  }
 
   return (
     <>
@@ -118,26 +153,43 @@ const Mgs = () => {
          </div>
 
          <div>
-          {/* {mgsArr.map(item=>(
-             item.whosendId == data.uid
+          {mgsArr.map(items=>(
+
+            items.massage? 
+             items.whosendId == data.uid
              ? <div className='sendmgs'>
-             <p>{item.massage}</p>
+             <p>{items.massage}</p>
+             {/* <span>{moment(item.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+             
            </div>
              :<div className='recivedMgs'>
-             <p>{item.massage}</p>
+             <p>{items.massage}</p>
            </div>
-            
+            : items.whosendId == data.uid
+            ?
+            <div className='sendmgs'>
+            <ModalImage
+                  small={items.img}
+                  large={items.img} 
+                />
+             </div>
+            :  <div className='recivedMgs'>
+            <ModalImage
+               small={items.img}
+               large={items.img}  
+             />        
+          </div>
            
-          ))} */}
-          <div className='sendmgs'>
+          ))}
+          {/* <div className='sendmgs'>
              <p>Hi</p>
            </div>
              <div className='recivedMgs'>
              <p>Hello</p>
-           </div>
+           </div> */}
 
           
-          <div className='sendmgs'>
+          {/* <div className='sendmgs'>
           <ModalImage
                 small={msd}
                 large={msd} 
@@ -145,32 +197,28 @@ const Mgs = () => {
            </div>
 
              <div className='recivedMgs'>
-              
              <ModalImage
                 small={msd}
-                large={msd}
-                
-              />
-              
-             {/* <Image className="msgPics" src={msd}/> */}
-           </div>
+                large={msd}  
+              />        
+           </div> */}
 
-           <div className='sendAudio'>
+           {/* <div className='sendAudio'>
             <audio controls></audio>
-            </div>
+            </div> */}
 
-           <div className='recivedAudio'>
+           {/* <div className='recivedAudio'>
             <audio controls></audio>
-            </div>
+            </div> */}
 
-           <div className='sendvideo'>
+           {/* <div className='sendvideo'>
            <video width="320" height="240" controls></video>
-            </div>
+            </div> */}
 
-           <div className='recivedvideo'>
+           {/* <div className='recivedvideo'>
            <video width="320" height="240" controls></video>
 
-            </div>
+            </div> */}
            
             
            
@@ -182,15 +230,18 @@ const Mgs = () => {
             <div className='inputMgs'>
               
               <BsFillGiftFill/>
+              <label>
+                <input type="file" hidden onChange={handleFile}/>
               <RiGalleryFill className='emojiGlass'/>
-          <input onChange={(e)=>setMgs(e.target.value)} className='sendMgsInput' type="text" placeholder='Write your message...'/>
+              </label>
+          <input value={mgs} onChange={(e)=>setMgs(e.target.value)} className='sendMgsInput' type="text" placeholder='Write your message...'/>
           <BsFillEmojiSunglassesFill onClick={()=>setshow(!show)}/>
           <BsFillSendFill onClick={handleSendMgs}/>
           
           </div>
           {show &&
           <div className="emoji">
-          <EmojiPicker/>
+          <EmojiPicker onEmojiClick={(e)=>setMgs(e.emoji+mgs)}/>
           </div>
           }
           

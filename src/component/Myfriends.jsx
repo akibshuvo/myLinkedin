@@ -29,9 +29,25 @@ const Myfriends = () => {
           arr.push({...item.val(), myFriensId: item.key})
         }
         
-        
       })
       setmyFriendsarr(arr)
+
+      console.log(arr[0], "heiiiiiiiiii")
+
+      if(userInfo.uid == arr[0].acceptId){
+        dispatch(activeChat({
+          type: "single",
+          activaChatName: arr[0].myFriendsName,
+          activaChatid: arr[0].myFriendId
+        }))
+
+      }else{
+        dispatch(activeChat({
+          type: "single",
+          activaChatName: arr[0].acceptName,
+          activaChatid: arr[0].acceptId
+        }))
+      }
     });
   },[])
 
@@ -67,7 +83,6 @@ const Myfriends = () => {
 
   let handleChat = (item)=>{
       if(userInfo.uid == item.acceptId){
-        console.log(item.myFriendsName)
         dispatch(activeChat({
           type: "single",
           activaChatName: item.myFriendsName,
@@ -75,7 +90,6 @@ const Myfriends = () => {
         }))
 
       }else{
-        console.log(item.acceptName)
         dispatch(activeChat({
           type: "single",
           activaChatName: item.acceptName,

@@ -104,7 +104,7 @@ const MyGroups = () => {
 });
   },[])
 
- console.log(memGroupId,"youuuu")
+ 
 
   useEffect(()=>{
     const friendRef = ref(db, 'myFriends');
