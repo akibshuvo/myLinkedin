@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from '../component/Image'
 import Logo from '../assets/Logo.png'
 import profile from "../assets/profile.png"
@@ -15,18 +15,47 @@ import { useDispatch,useSelector } from 'react-redux';
 import { logedUser } from '../slices/userSlice';
 import { useNavigate,Link } from 'react-router-dom'
 import { getAuth, signOut } from "firebase/auth";
-import { getDatabase, ref, onValue } from "firebase/database";
+// import { getDatabase, ref, onValue } from "firebase/database";
 import Navber from '../component/Navber'
+import { MdEdit } from "react-icons/md";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import { getDatabase, ref, set, push, onValue,remove, update } from "firebase/database";
+
+
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 const Home = () => {
+  const db = getDatabase();
+
   const auth = getAuth();
   let navigate = useNavigate()
 
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+
+  let [about, setAbout] = useState([])
+  let [aboutValue, setAboutValue] = useState("")
+  let [updateIds, setUpdateIds] = useState("")
+  let [abouBtn, setAboutBtn] = useState(false)
+
+
 
   let data = useSelector(state => state.logedUser.value)
-
-  
-
   let dispatch = useDispatch()
 
   useEffect(()=>{
@@ -43,6 +72,54 @@ const Home = () => {
       navigate("/login")
     })
   }
+
+
+  let handleChangeAbout = (e)=>{
+    setAboutValue(e.target.value)
+  }
+
+  let handleOpen = ()=>{
+   
+  
+    setOpen(true)
+  }
+
+
+  let handleSend = ()=>{
+    set(push(ref(db, 'aboutUs')), {
+      whoAboutName: data.displayName,
+      whoAboutID: data.uid,
+      aboutText: aboutValue
+    });
+    setAboutBtn(true)
+    setOpen(false)
+  }
+
+  useEffect(()=>{
+    const aboutRef = ref(db, 'aboutUs');
+    onValue(aboutRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+         
+      arr.push({...item.val(), aboutId: item.key})
+
+      setUpdateIds(item.key)
+      })
+      // setAboutBtn(true)
+
+      setAbout(arr)
+            
+    });
+  },[])
+
+  let handleupdate = ()=>{
+    update(ref(db, 'aboutUs/' + updateIds), {
+      aboutText: aboutValue
+    })
+    setOpen(false)
+  }
+
+
  
 
 
@@ -83,8 +160,16 @@ const Home = () => {
 
       {/* ==== about content start ==== */}
       <div className='aboutContent'>
+      <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
-        <p className='biosP'>I'm more experienced in eCommerce web projects and mobile banking apps, but also like to work with creative projects, such as landing pages or unusual corporate websites. </p>
+        <MdEdit onClick={handleOpen}/>
+
+        </div>
+        {about.map(item=>(
+          item.whoAboutID == data.uid &&
+        <p className='biosP'>{item.aboutText} </p>
+
+        ))}
         <a href="">SEE MORE</a>
       </div>
       {/* ==== about content end ==== */}
@@ -172,6 +257,34 @@ const Home = () => {
 <Button onClick={handleLogedOut} className='logout' variant="contained">LogOut</Button> 
 
       </div>  
+      <div>
+      
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+             About Us
+          </Typography>
+          
+          <TextField onChange={handleChangeAbout} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
+            
+            <div className='aboutsendBtn'>
+            <Button onClick={()=>setOpen(false)} variant="outlined">cancel</Button>
+            {abouBtn 
+            ? 
+            <Button onClick={handleupdate} variant="contained">update</Button>
+            :
+            <Button onClick={handleSend} variant="contained">add</Button>
+            }
+            </div>
+          
+        </Box>
+      </Modal>
+    </div>
     </div>
     
     
