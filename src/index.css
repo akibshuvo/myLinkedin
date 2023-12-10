@@ -1137,6 +1137,21 @@ line-height: 150%; /* 21px */
     right: 50px;
 }
 
+.audiosend{
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    
+
+
+}
+
+.ausioDelet{
+ color: black;
+ 
+ 
+}
+
 
 
 

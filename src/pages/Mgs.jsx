@@ -16,27 +16,30 @@ import p3 from '../assets/p3.png'
 import msd from '../assets/msg.png'
 import ModalImage from "react-modal-image";
 import EmojiPicker from 'emoji-picker-react';
-
+import { AudioRecorder } from 'react-audio-voice-recorder';
 import { getStorage, ref as imgref,getDownloadURL,uploadBytes } from "firebase/storage";
-
-
-
+import { RiDeleteBin2Line  } from "react-icons/ri";
 
 
 const Mgs = () => {
   const db = getDatabase();
   const storage = getStorage();
-
-
-
+  
   let userInfo = useSelector(state => state.activeChat.value)
-
   let data = useSelector(state=> state.logedUser.value)
 
 
   let [mgs,setMgs] = useState("")
   let [mgsArr, setMgsArr] = useState([])
   let [show,setshow] = useState(false)
+  let [audios,setAudios] = useState("")
+
+  const addAudioElement = (blob) => {
+    const url = URL.createObjectURL(blob);
+    
+    console.log(blob)
+    setAudios(blob)
+  };
   
   let handleSendMgs = ()=>{
     if(userInfo.type == 'single'){
@@ -47,7 +50,9 @@ const Mgs = () => {
         whoRecivedName: userInfo.activaChatName,
         whoRevivedId: userInfo.activaChatid,
         massage: mgs,
-        // date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+        date: `${new Date().getFullYear()}-${
+          new Date().getMonth() + 1
+        }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
       });
     }else{
       console.log("group er ta hobe")
@@ -88,8 +93,33 @@ const Mgs = () => {
             whoRecivedName: userInfo.activaChatName,
             whoRevivedId: userInfo.activaChatid,
             img: downloadURL,
-            // date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+            date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
           });
+        }else{
+          console.log("group er ta hobe")
+        }
+      });
+});
+  }
+
+  let handleAudioSend = (e)=>{
+    const storageRef = imgref(storage, Date.now().toString());
+
+    uploadBytes(storageRef,audios).then((snapshot) => {
+      getDownloadURL(storageRef).then((downloadURL) => {
+
+        console.log("aaaaa", audios,downloadURL)
+        if(userInfo.type == 'single'){
+          set(push(ref(db, 'singleMassage')), {
+            whosendName: data.displayName,
+            whosendId: data.uid,
+      
+            whoRecivedName: userInfo.activaChatName,
+            whoRevivedId: userInfo.activaChatid,
+            audios: downloadURL,
+            date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+          });
+          setAudios("")
         }else{
           console.log("group er ta hobe")
         }
@@ -159,26 +189,44 @@ const Mgs = () => {
              items.whosendId == data.uid
              ? <div className='sendmgs'>
              <p>{items.massage}</p>
-             {/* <span>{moment(item.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
              
            </div>
              :<div className='recivedMgs'>
              <p>{items.massage}</p>
+             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
            </div>
-            : items.whosendId == data.uid
+            :
+            items.audios
+            ? 
+            items.whosendId == data.uid
+            ?
+            <div className='sendAudio'>
+            <audio src={items.audios} controls></audio>
+            </div>
+            :
+           <div className='recivedAudio'>
+            <audio src={items.audios} controls></audio>
+            </div>
+            :
+            items.whosendId == data.uid
             ?
             <div className='sendmgs'>
             <ModalImage
                   small={items.img}
                   large={items.img} 
                 />
+                {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
              </div>
+             
             :  <div className='recivedMgs'>
             <ModalImage
                small={items.img}
                large={items.img}  
              />        
+             {/* <span>{moment(items.date, "YYYYMMDD hh:mm").fromNow()}</span> */}
           </div>
+          
            
           ))}
           {/* <div className='sendmgs'>
@@ -205,9 +253,9 @@ const Mgs = () => {
 
            {/* <div className='sendAudio'>
             <audio controls></audio>
-            </div> */}
+            </div>
 
-           {/* <div className='recivedAudio'>
+           <div className='recivedAudio'>
             <audio controls></audio>
             </div> */}
 
@@ -229,21 +277,42 @@ const Mgs = () => {
 
             <div className='inputMgs'>
               
-              <BsFillGiftFill/>
-              <label>
-                <input type="file" hidden onChange={handleFile}/>
-              <RiGalleryFill className='emojiGlass'/>
-              </label>
-          <input value={mgs} onChange={(e)=>setMgs(e.target.value)} className='sendMgsInput' type="text" placeholder='Write your message...'/>
-          <BsFillEmojiSunglassesFill onClick={()=>setshow(!show)}/>
-          <BsFillSendFill onClick={handleSendMgs}/>
-          
+        {audios 
+        ? 
+        <div className='audiosend'>
+        <audio src={URL.createObjectURL(audios)} controls></audio>
+        <RiDeleteBin2Line onClick={()=>setAudios("")}  className='ausioDelet'/>
+        <BsFillSendFill onClick={handleAudioSend}/>
+
+        </div>
+        :
+        <>
+            <div className='adioRec'>
+            <AudioRecorder 
+           onRecordingComplete={addAudioElement}
+           audioTrackConstraints={{
+           noiseSuppression: true,
+           echoCancellation: true,
+         }} 
+         
+       />
+            </div>
+                 <label>
+                   <input className='sendmgsinput' type="file" hidden onChange={handleFile}/>
+                 <RiGalleryFill className='emojiGlass'/>
+                 </label>
+             <input value={mgs} onChange={(e)=>setMgs(e.target.value)} className='sendMgsInput' type="text" placeholder='Write your message...'/>
+             <BsFillEmojiSunglassesFill onClick={()=>setshow(!show)}/>
+             <BsFillSendFill onClick={handleSendMgs}/>
+             </>
+             }
           </div>
           {show &&
           <div className="emoji">
           <EmojiPicker onEmojiClick={(e)=>setMgs(e.emoji+mgs)}/>
           </div>
           }
+         
           
             </div>
             
