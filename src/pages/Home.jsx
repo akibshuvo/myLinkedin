@@ -23,10 +23,23 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { getDatabase, ref, set, push, onValue,remove, update } from "firebase/database";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const styles = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -45,13 +58,17 @@ const Home = () => {
   const auth = getAuth();
   let navigate = useNavigate()
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   let [about, setAbout] = useState([])
   let [aboutValue, setAboutValue] = useState("")
-  let [updateIds, setUpdateIds] = useState("")
-  let [abouBtn, setAboutBtn] = useState(false)
+  let [bioBtn, setBioBtn] = useState(true)
+
+  const [opens, setOpens] = useState(false);
+  const handleOpens = () => setOpens(true);
+  const handleCloses = () => setOpens(false);
+
 
 
 
@@ -79,20 +96,30 @@ const Home = () => {
   }
 
   let handleOpen = ()=>{
-   
-  
     setOpen(true)
   }
 
-
   let handleSend = ()=>{
-    set(push(ref(db, 'aboutUs')), {
-      whoAboutName: data.displayName,
-      whoAboutID: data.uid,
-      aboutText: aboutValue
-    });
-    setAboutBtn(true)
-    setOpen(false)
+    if(aboutValue){
+      set(push(ref(db, 'aboutUs')), {
+        whoAboutName: data.displayName,
+        whoAboutID: data.uid,
+        aboutText: aboutValue
+      });
+      setOpen(false)
+      setBioBtn(false)
+    }else{
+      toast.error('write you bios', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
   }
 
   useEffect(()=>{
@@ -100,27 +127,29 @@ const Home = () => {
     onValue(aboutRef, (snapshot) => {
       let arr = []
       snapshot.forEach(item=>{
-         
-      arr.push({...item.val(), aboutId: item.key})
-
-      setUpdateIds(item.key)
+          arr.push({...item.val(), aboutId: item.key})
       })
       // setAboutBtn(true)
-
+      
       setAbout(arr)
+    
             
     });
   },[])
+  
 
-  let handleupdate = ()=>{
-    update(ref(db, 'aboutUs/' + updateIds), {
-      aboutText: aboutValue
-    })
-    setOpen(false)
+  let handleUpdates = ()=>{
+      
+console.log("ami")
+    // update(ref(db, 'aboutUs/' + updateIds), {
+    //   aboutText: aboutValue
+    // })
+
+    // setOpen(false)
   }
 
-
  
+
 
 
   return (
@@ -160,18 +189,71 @@ const Home = () => {
 
       {/* ==== about content start ==== */}
       <div className='aboutContent'>
+
+
       <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
-        <MdEdit onClick={handleOpen}/>
+        {bioBtn &&
+          <button onClick={handleOpen} className='bio'>add bio</button>
+        }
+        
 
         </div>
         {about.map(item=>(
           item.whoAboutID == data.uid &&
+          <div className='ffffff'>
         <p className='biosP'>{item.aboutText} </p>
-
+        <MdEdit onClick={handleOpens}/>
+        </div>
         ))}
-        <a href="">SEE MORE</a>
-      </div>
+        
+      </div> 
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+             About Us
+          </Typography>
+          
+          <TextField onChange={handleChangeAbout} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
+            
+            <div className='aboutsendBtn'>
+            <Button onClick={()=>setOpen(false)} variant="outlined">cancel</Button>
+            <Button onClick={handleSend} variant="contained">add</Button>
+            
+            </div>
+          
+        </Box>
+      </Modal>
+      <div>
+     
+      <Modal
+        open={opens}
+        onClose={handleCloses}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Edit Bios
+          </Typography>
+         
+          <TextField onChange={handleChangeAbout} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
+
+          <div className='aboutsendBtn'>
+            <Button onClick={()=>setOpens(false)} variant="outlined">cancel</Button>
+            <Button onClick={handleUpdates} variant="contained">update</Button>
+            
+            </div>
+        </Box>
+      </Modal>
+    </div>
+      
+    
       {/* ==== about content end ==== */}
 
       {/* ==== project content start ==== */}
@@ -257,34 +339,7 @@ const Home = () => {
 <Button onClick={handleLogedOut} className='logout' variant="contained">LogOut</Button> 
 
       </div>  
-      <div>
-      
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-             About Us
-          </Typography>
-          
-          <TextField onChange={handleChangeAbout} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
-            
-            <div className='aboutsendBtn'>
-            <Button onClick={()=>setOpen(false)} variant="outlined">cancel</Button>
-            {abouBtn 
-            ? 
-            <Button onClick={handleupdate} variant="contained">update</Button>
-            :
-            <Button onClick={handleSend} variant="contained">add</Button>
-            }
-            </div>
-          
-        </Box>
-      </Modal>
-    </div>
+    
     </div>
     
     

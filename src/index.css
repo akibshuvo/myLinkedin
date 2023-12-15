@@ -1169,6 +1169,24 @@ line-height: 150%; /* 21px */
     margin-top: 20px;
 }
 
+.ffffff{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bio{
+    /* background-color: #086FA4; */
+    color: black;
+    padding: 5px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.104);
+    font-family: var(--barlow) ;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
 
 
 
