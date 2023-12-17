@@ -84,6 +84,7 @@ const MyGroups = () => {
   let [memberArr, setMemberArr] = useState([])
   let [memberListArr, setMemberListarr] = useState([])
   let [memberGroups, setMemberGroups] = useState([])
+  let [grList, setgrListarr] = useState([])
   let [listMem, setListMem] = useState([])
 
   let [memGroupId, setMemGroupId] = useState("")
@@ -190,6 +191,7 @@ setOpenss(true);
 
 
   let handleOpens = (item)=>{
+    console.log(item,"[[[")
     const memberRef = ref(db, 'memberList');
     onValue(memberRef, (snapshot) => {
       let arr = []
@@ -205,21 +207,27 @@ setOpenss(true);
     setOpens(true)
   }
   let handleOpensss = (item)=>{
-    
-    
+    console.log(item,"cliiii")
     const memberRef = ref(db, 'memberList');
     onValue(memberRef, (snapshot) => {
       let arr = []
+      let arrs = []
       snapshot.forEach(items=>{
-        
-        
+        console.log(items.val(),"ggghh")
         if(items.val().groupsId == item.groupsId && userInfo.uid == items.val().reqPeopleId){
           arr.push({...items.val(), memberIdss: items.key})
         } 
+        if(items.val().groupsId == item.groupsId){
+          arrs.push({...items.val(), memberIdssss: items.key})
+        }         
+        
       })   
     
       setListMem(arr)
-    });
+      setgrListarr(arrs)
+      
+
+    })
     setOpensss(true)
   }
 
@@ -395,7 +403,7 @@ setOpenss(true);
   </div> 
 ))}
 
-{memberListArr.map(item=>(
+{grList.map(item=>(
   <div className='oneFriend'>
   <div className='imgName'>
       <Image src={man}/>
