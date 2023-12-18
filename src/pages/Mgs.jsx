@@ -27,6 +27,11 @@ const Mgs = () => {
   
   let userInfo = useSelector(state => state.activeChat.value)
   let data = useSelector(state=> state.logedUser.value)
+  let groupData = useSelector(state=> state.groupChat.value)
+
+  
+
+  console.log(groupData, "yuuuuuy")
 
 
   let [mgs,setMgs] = useState("")
@@ -66,7 +71,7 @@ const Mgs = () => {
     onValue(mgsRef, (snapshot) => {
       let arr = []
       snapshot.forEach(item=>{
-         console.log(item.val(), "msssss data")
+         
          if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
          || 
         (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId)){
@@ -80,7 +85,7 @@ const Mgs = () => {
 
 
   let handleFile = (e)=>{
-    console.log(e.target.files[0],"ooooo")
+    // console.log(e.target.files[0],"ooooo")
     const storageRef = imgref(storage, e.target.files[0].name);
 
     uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
@@ -108,7 +113,7 @@ const Mgs = () => {
     uploadBytes(storageRef,audios).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
 
-        console.log("aaaaa", audios,downloadURL)
+        // console.log("aaaaa", audios,downloadURL)
         if(userInfo.type == 'single'){
           set(push(ref(db, 'singleMassage')), {
             whosendName: data.displayName,
@@ -151,7 +156,8 @@ const Mgs = () => {
             </div>
             </div>
 
-
+            {userInfo.type == "single" 
+            ?
             <div className='mgsgsbox'>
               <div className='mgsnavpadding'>
             <div className='mgsNav'>
@@ -315,7 +321,131 @@ const Mgs = () => {
          
           
             </div>
-            
+            :
+            <div className='mgsgsbox'>
+              <div className='mgsnavpadding'>
+            <div className='mgsNav'>
+              <div className='firstline'>
+                <div className='nameAndProfile'>
+                <Image className='prsize' src={man}/>
+                <div>
+                <h4 className='namedis'>{groupData.groupNames}</h4>
+                <p className='activeago'>active 3m ago</p>
+                </div>
+                </div>
+                </div>
+                <div>
+                <BiSolidPhoneCall className='callIcon'/>
+                <BsCameraVideoFill className='callIcon'/>
+                <ImCancelCircle className='callIcons'/>
+                
+                </div>
+              </div>
+              </div>
+             {/* <div className='textMgs'>
+              <div>
+                <div>
+              <Image className='prsizesss' src={man}/>
+              <p className='prsiz'>Linkedin</p>
+              <p className='prsizes'>You're not friends on Linkedin
+         Works at KPMG Rahman Rahman Huq, Fiverr and Google Maps
+         </p>
+         </div>
+
+         <div>
+          {mgsArr.map(items=>(
+
+            items.massage? 
+             items.whosendId == data.uid
+             ? <div className='sendmgs'>
+             <p>{items.massage}</p>
+             
+             
+           </div>
+             :<div className='recivedMgs'>
+             <p>{items.massage}</p>
+             
+           </div>
+            :
+            items.audios
+            ? 
+            items.whosendId == data.uid
+            ?
+            <div className='sendAudio'>
+            <audio src={items.audios} controls></audio>
+            </div>
+            :
+           <div className='recivedAudio'>
+            <audio src={items.audios} controls></audio>
+            </div>
+            :
+            items.whosendId == data.uid
+            ?
+            <div className='sendmgs'>
+            <ModalImage
+                  small={items.img}
+                  large={items.img} 
+                />
+                
+             </div>
+             
+            :  <div className='recivedMgs'>
+            <ModalImage
+               small={items.img}
+               large={items.img}  
+             />        
+             
+          </div>
+          
+           
+          ))}
+   
+           
+         </div>
+              </div>
+             
+            </div>
+
+            <div className='inputMgs'>
+              
+        {audios 
+        ? 
+        <div className='audiosend'>
+        <audio src={URL.createObjectURL(audios)} controls></audio>
+        <RiDeleteBin2Line onClick={()=>setAudios("")}  className='ausioDelet'/>
+        <BsFillSendFill onClick={handleAudioSend}/>
+        </div>
+        :
+        <>
+            <div className='adioRec'>
+            <AudioRecorder 
+           onRecordingComplete={addAudioElement}
+           audioTrackConstraints={{
+           noiseSuppression: true,
+           echoCancellation: true,
+         }} 
+         
+       />
+            </div>
+                 <label>
+                   <input className='sendmgsinput' type="file" hidden onChange={handleFile}/>
+                 <RiGalleryFill className='emojiGlass'/>
+                 </label>
+             <input value={mgs} onChange={(e)=>setMgs(e.target.value)} className='sendMgsInput' type="text" placeholder='Write your message...'/>
+             <BsFillEmojiSunglassesFill onClick={()=>setshow(!show)}/>
+             <BsFillSendFill onClick={handleSendMgs}/>
+             </>
+             }
+          </div>
+          {show &&
+          <div className="emoji">
+          <EmojiPicker onEmojiClick={(e)=>setMgs(e.emoji+mgs)}/>
+          </div>
+          } */}
+         
+          
+            </div>
+            }
             
         </div>
      </div>

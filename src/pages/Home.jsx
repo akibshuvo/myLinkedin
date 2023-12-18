@@ -193,17 +193,19 @@ console.log("ami")
 
       <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
-        {bioBtn &&
+        <MdEdit/>
+
+        {/* {bioBtn &&
           <button onClick={handleOpen} className='bio'>add bio</button>
-        }
+        } */}
         
 
         </div>
         {about.map(item=>(
           item.whoAboutID == data.uid &&
           <div className='ffffff'>
-        <p className='biosP'>{item.aboutText} </p>
-        <MdEdit onClick={handleOpens}/>
+        <p className='biosP'>Success is the state or condition of meeting a defined range of expectations. It may be viewed as the opposite of failure. The criteria for success depend on context</p>
+        {/* <MdEdit onClick={handleOpens}/> */}
         </div>
         ))}
         

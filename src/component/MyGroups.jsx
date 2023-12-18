@@ -242,7 +242,7 @@ setOpenss(true);
 
   let handleGroupChat = (item)=>{
 
-    console.log(item,"thhhhhhhs")
+    // console.log(item,"thhhhhhhs")
       if(userInfo.uid == item.whoCreateId){
         dispatch(groupChat({
           type: "groupMsg",
@@ -252,7 +252,7 @@ setOpenss(true);
         }))
 
       }else{
-        console.log('hmm')
+        // console.log('hmm')
         dispatch(groupChat({
           type: "groupMsg",
           activeGN: item.reqPeopleName,
