@@ -63,7 +63,7 @@ const Home = () => {
 
   let [about, setAbout] = useState([])
   let [aboutValue, setAboutValue] = useState("")
-  let [bioBtn, setBioBtn] = useState(true)
+  let [bioBtn, setBioBtn] = useState(false)
 
   const [opens, setOpens] = useState(false);
   const handleOpens = () => setOpens(true);
@@ -107,9 +107,9 @@ const Home = () => {
         aboutText: aboutValue
       });
       setOpen(false)
-      setBioBtn(false)
+      setBioBtn(true)
     }else{
-      toast.error('write you bios', {
+      toast.error('write your bios', {
         position: "bottom-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -193,11 +193,17 @@ console.log("ami")
 
       <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
-        <MdEdit/>
 
-        {/* {bioBtn &&
-          <button onClick={handleOpen} className='bio'>add bio</button>
-        } */}
+{bioBtn 
+? 
+<MdEdit/>
+: 
+<button onClick={handleOpen} className='bio'>add bio</button>
+
+}
+        
+
+        
         
 
         </div>
