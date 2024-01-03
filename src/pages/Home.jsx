@@ -194,12 +194,11 @@ console.log("ami")
       <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
 
-{bioBtn 
+{about.length == 0 
 ? 
-<MdEdit/>
-: 
 <button onClick={handleOpen} className='bio'>add bio</button>
-
+: 
+<MdEdit/> 
 }
         
 
