@@ -8,11 +8,11 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { getDatabase, ref, set, push, remove, onValue } from "firebase/database";
-import { useSelector } from 'react-redux';
 import Myfriends from './Myfriends';
-import { useDispatch } from 'react-redux';
 import { HiUserRemove } from "react-icons/hi";
 import { groupChat } from '../slices/groupActive';
+import { activeChat } from '../slices/activeChatSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const style = {
   position: 'absolute',
@@ -240,27 +240,16 @@ setOpenss(true);
   }
   
 
-  let handleGroupChat = (item)=>{
+  let handleChat = (item)=>{
+      dispatch(activeChat({
+        type: "groupMsgs",
+        activaChatName: item.groupName,
+        activaChatid: item.groupId
 
-    // console.log(item,"thhhhhhhs")
-      if(userInfo.uid == item.whoCreateId){
-        dispatch(groupChat({
-          type: "groupMsg",
-          activeGN: item.whoCreateGroup,
-          activeGId: item.whoCreateId,
-          groupNames: item.groupName
-        }))
-
-      }else{
-        // console.log('hmm')
-        dispatch(groupChat({
-          type: "groupMsg",
-          activeGN: item.reqPeopleName,
-          activeGId: item.reqPeopleId,
-          groupNames: item.groupsNames
-        }))
-      }
-  }
+      }))
+      
+console.log("kkkkklll",item)
+}
 
 
 
@@ -306,7 +295,7 @@ setOpenss(true);
     </div>
 
     {groupArr.map(item=>(
-        <div onClick={()=>handleGroupChat(item)} className='oneFriend'>
+        <div onClick={()=>handleChat(item)} className='oneFriend'>
         <div className='imgName'>
             <Image src={man}/>
             <div>
@@ -325,7 +314,7 @@ setOpenss(true);
     ))}
 
 {memberGroups.map(item=>(
-    <div onClick={()=>handleGroupChat(item)} className='oneFriend'>
+    <div onClick={()=>handleChat(item)} className='oneFriend'>
     <div className='imgName'>
         <Image src={man}/>
         <div>

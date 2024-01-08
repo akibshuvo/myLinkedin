@@ -32,7 +32,7 @@ const Myfriends = () => {
       })
       setmyFriendsarr(arr)
 
-      console.log(arr[0], "heiiiiiiiiii")
+    
 
       if(userInfo.uid == arr[0].acceptId){
         dispatch(activeChat({

@@ -95,6 +95,7 @@ const GroupList = () => {
 remove(ref(db,'reqGroups/'+ reqIds))
   }
 
+  
  
   return (
     <>
