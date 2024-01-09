@@ -135,8 +135,7 @@ remove(ref(db,'reqGroups/'+ reqIds))
         }
 
           
-          {/* <Button color='info' variant="contained">Unfreind</Button> */}
-          {/* <Button color='error' variant="contained">block</Button> */}
+          
           </div>
           </div>
       ))}

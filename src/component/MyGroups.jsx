@@ -179,8 +179,8 @@ setOpenss(true);
 
        reqPeopleId: item.whoReqId,
        reqPeopleName: item.whoReqName,
-       groupsId: item.groupId,
-       groupsNames: item.groupName
+       groupId: item.groupId,
+       groupName: item.groupName
 
       })
       .then(()=>{
@@ -191,13 +191,13 @@ setOpenss(true);
 
 
   let handleOpens = (item)=>{
-    console.log(item,"[[[")
+    
     const memberRef = ref(db, 'memberList');
     onValue(memberRef, (snapshot) => {
       let arr = []
       snapshot.forEach(items=>{
         
-        if(items.val().groupsId == item.groupId && userInfo.uid == items.val().whoAccept){
+        if(items.val().groupId == item.groupId && userInfo.uid == items.val().whoAccept){
           arr.push({...items.val(), memberIdss: items.key})
         } 
       })
@@ -247,8 +247,8 @@ setOpenss(true);
         activaChatid: item.groupId
 
       }))
-      
-console.log("kkkkklll",item)
+       console.log(item,"jjjjjjhhh")
+
 }
 
 
@@ -318,7 +318,7 @@ console.log("kkkkklll",item)
     <div className='imgName'>
         <Image src={man}/>
         <div>
-        <h3>{item.groupsNames}</h3>
+        <h3>{item.groupName}</h3>
         <p>Admin:__{item.whoAcceptName}</p>
         </div>
     </div>

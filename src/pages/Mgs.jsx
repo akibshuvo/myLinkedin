@@ -7,7 +7,6 @@ import man from '../assets/man3.png'
 import {BsCameraVideoFill,BsFillEmojiSunglassesFill,BsFillSendFill,BsFillGiftFill} from 'react-icons/bs'
 import {BiSolidPhoneCall} from 'react-icons/bi'
 import {ImCancelCircle} from 'react-icons/im'
-
 import {RiGalleryFill} from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import { getDatabase, ref, set,push,onValue  } from "firebase/database";
@@ -19,6 +18,8 @@ import EmojiPicker from 'emoji-picker-react';
 import { AudioRecorder } from 'react-audio-voice-recorder';
 import { getStorage, ref as imgref,getDownloadURL,uploadBytes } from "firebase/storage";
 import { RiDeleteBin2Line  } from "react-icons/ri";
+import { IoIosShareAlt } from "react-icons/io";
+
 
 
 const Mgs = () => {
@@ -30,20 +31,15 @@ const Mgs = () => {
 
   let groupData = useSelector(state=> state.groupChat.value)
 
-  
-
-  console.log(groupData, "yuuuuuy")
-
-
   let [mgs,setMgs] = useState("")
   let [mgsArr, setMgsArr] = useState([])
+  let [groupMgsArr, setGroupMgsArr] = useState([])
   let [show,setshow] = useState(false)
   let [audios,setAudios] = useState("")
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
-    
-    console.log(blob)
+
     setAudios(blob)
   };
   
@@ -61,15 +57,26 @@ const Mgs = () => {
         }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
       });
     }else{
-      console.log("group er ta hobe")
+      set(push(ref(db, 'groupsMsg')), {
+        whosendName: data.displayName,
+        whosendId: data.uid,
+        whosendPhoto: data.photoURL,
+  
+        whoRecivedName: userInfo.activaChatName,
+        whoRevivedId: userInfo.activaChatid,
+        massage: mgs,
+        date: `${new Date().getFullYear()}-${
+          new Date().getMonth() + 1
+        }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+      });
     }
   }
 
 
   useEffect(()=>{
     const db = getDatabase();
-    const mgsRef = ref(db, 'singleMassage');
-    onValue(mgsRef, (snapshot) => {
+    const gmgsRef = ref(db, 'singleMassage');
+    onValue(gmgsRef, (snapshot) => {
       let arr = []
       snapshot.forEach(item=>{
          
@@ -81,6 +88,26 @@ const Mgs = () => {
       })
 
       setMgsArr(arr)
+    });
+  },[userInfo.activaChatid])
+
+  useEffect(()=>{
+    const db = getDatabase();
+    const mgsRef = ref(db, 'groupsMsg');
+    onValue(mgsRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+         
+        //  if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
+        //  || 
+        // (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId))
+        
+        // {
+           arr.push({...item.val(), gMsgIds: item.key})
+        //  }
+      })
+
+      setGroupMgsArr(arr)
     });
   },[userInfo.activaChatid])
 
@@ -102,7 +129,15 @@ const Mgs = () => {
             date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
           });
         }else{
-          console.log("group er ta hobe")
+          set(push(ref(db, 'groupsMsg')), {
+            whosendName: data.displayName,
+            whosendId: data.uid,
+      
+            whoRecivedName: userInfo.activaChatName,
+            whoRevivedId: userInfo.activaChatid,
+            img: downloadURL,
+            date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+          });
         }
       });
 });
@@ -127,10 +162,22 @@ const Mgs = () => {
           });
           setAudios("")
         }else{
-          console.log("group er ta hobe")
+          set(push(ref(db, 'groupsMsg')), {
+            whosendName: data.displayName,
+            whosendId: data.uid,
+      
+            whoRecivedName: userInfo.activaChatName,
+            whoRevivedId: userInfo.activaChatid,
+            audios: downloadURL,
+            date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes}`
+          });
         }
       });
 });
+  }
+
+  let handleForword = (item)=>{
+    console.log(item,"for")
   }
 
   return (
@@ -189,8 +236,9 @@ const Mgs = () => {
          </p>
          </div>
 
-         <div>
-          {mgsArr.map(items=>(
+         
+          {userInfo.type == "single" 
+          ?  mgsArr.map(items=>(
 
             items.massage? 
              items.whosendId == data.uid
@@ -235,9 +283,64 @@ const Mgs = () => {
           </div>
           
            
-          ))}
-           
+          ))
+          : groupMgsArr.map(items=>(
+            items.massage? 
+            items.whosendId == data.uid
+            ? <div className='sendmgs'>
+            <p>{items.massage}</p>
+            {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+          </div>
+
+            :
+            <>
+            <div >
+             
+            <p className='nameE'>{items.whosendName}</p>
+            </div>
+            <div className='mgsNP'>
+            <Image className="mgsph" src={items.whosendPhoto}/>
+            <div className='recivedMgs'>
+            <p>{items.massage}</p>
+            {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+          </div>
+          <IoIosShareAlt onClick={()=>handleForword(items)} className='forword'/>
+          </div>
+          
+          </>
+           : 
+           items.audios
+           ? 
+           items.whosendId == data.uid
+           ?
+           <div className='sendAudio'>
+           <audio src={items.audios} controls></audio>
+           </div>
+           :
+          <div className='recivedAudio'>
+           <audio src={items.audios} controls></audio>
+           </div>
+           :
+           items.whosendId == data.uid
+           ?
+           <div className='sendmgs'>
+           <ModalImage
+                 small={items.img}
+                 large={items.img} 
+               />
+               {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+            </div>
+            
+           :  <div className='recivedMgs'>
+           <ModalImage
+              small={items.img}
+              large={items.img}  
+            />        
+            {/* <span>{moment(items.date, "YYYYMMDD hh:mm").fromNow()}</span> */}
          </div>
+          ))
+          }
+         
               </div>
              
             </div>
