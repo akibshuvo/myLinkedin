@@ -19,12 +19,32 @@ import { AudioRecorder } from 'react-audio-voice-recorder';
 import { getStorage, ref as imgref,getDownloadURL,uploadBytes } from "firebase/storage";
 import { RiDeleteBin2Line  } from "react-icons/ri";
 import { IoIosShareAlt } from "react-icons/io";
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 const Mgs = () => {
+
   const db = getDatabase();
   const storage = getStorage();
+
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
   
   let userInfo = useSelector(state => state.activeChat.value)
   let data = useSelector(state=> state.logedUser.value)
@@ -34,6 +54,7 @@ const Mgs = () => {
   let [mgs,setMgs] = useState("")
   let [mgsArr, setMgsArr] = useState([])
   let [groupMgsArr, setGroupMgsArr] = useState([])
+  let [fArr, setmyFriendsarr] = useState([])
   let [show,setshow] = useState(false)
   let [audios,setAudios] = useState("")
 
@@ -97,13 +118,16 @@ const Mgs = () => {
     onValue(mgsRef, (snapshot) => {
       let arr = []
       snapshot.forEach(item=>{
-         
+         console.log(item.val(),"jiiiiiiiiii")
         //  if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
         //  || 
         // (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId))
         
         // {
-           arr.push({...item.val(), gMsgIds: item.key})
+          if(item.val().whoRevivedId == userInfo.activaChatid){
+            arr.push({...item.val(), gMsgIds: item.key})
+
+          }
         //  }
       })
 
@@ -176,9 +200,42 @@ const Mgs = () => {
 });
   }
 
-  let handleForword = (item)=>{
-    console.log(item,"for")
+  
+  useEffect(()=>{
+    const friendRef = ref(db, 'myFriends');
+    onValue(friendRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+        if(data.uid == item.val().acceptId || data.uid == item.val().myFriendId){
+          arr.push({...item.val(), myFriensId: item.key})
+        }
+        
+      })
+      setmyFriendsarr(arr)
+    });
+  },[])
+
+  let handleOpen = (item)=>{
+      set(push(ref(db, 'forwardMgs')), {
+      ...item,
+
+      whoforward: data.displayName,
+      whoforwardId: data .uid
+    });
+    setOpen(true)
   }
+
+  let handleFor = (item)=>{
+    console.log(item,'MYYYY')
+
+    const fmRef = ref(db, 'forwardMgs');
+     onValue(fmRef, (snapshot) => {
+      snapshot.forEach(items=>{
+        console.log(items.val(),"kkkkkkk")
+  })
+});
+  }
+
 
   return (
     <>
@@ -291,7 +348,6 @@ const Mgs = () => {
             <p>{items.massage}</p>
             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
           </div>
-
             :
             <>
             <div >
@@ -304,7 +360,7 @@ const Mgs = () => {
             <p>{items.massage}</p>
             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
           </div>
-          <IoIosShareAlt onClick={()=>handleForword(items)} className='forword'/>
+          <IoIosShareAlt onClick={()=>handleOpen(items)} className='forword'/>
           </div>
           
           </>
@@ -382,9 +438,39 @@ const Mgs = () => {
           <EmojiPicker onEmojiClick={(e)=>setMgs(e.emoji+mgs)}/>
           </div>
           }
-         
-          
+            
             </div>
+
+            <div>
+     
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <h2>Forward Massage</h2>
+          </Typography>
+
+          {fArr.map(item=>(
+            <div className='oneFriend'>
+            <div className='imgName'>
+                <Image src={man}/>
+                <div>
+                <h3>{data.uid == item.acceptId?item.myFriendsName:item.acceptName}</h3>
+                <p>Apps Developer</p>
+                </div>
+            </div>
+            <button onClick={()=>handleFor(item)}>forward</button>
+            </div>
+          ))}
+          
+          
+        </Box>
+      </Modal>
+    </div>
             
             
             

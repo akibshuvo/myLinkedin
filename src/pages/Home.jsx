@@ -63,7 +63,8 @@ const Home = () => {
 
   let [about, setAbout] = useState([])
   let [aboutValue, setAboutValue] = useState("")
-  let [bioBtn, setBioBtn] = useState(false)
+  let [setupIdss, upIdss] = useState("")
+  
 
   const [opens, setOpens] = useState(false);
   const handleOpens = () => setOpens(true);
@@ -131,21 +132,30 @@ const Home = () => {
       })
       // setAboutBtn(true)
       
-      setAbout(arr)
-    
-            
+      setAbout(arr)   
+    });
+  },[])
+
+  useEffect(()=>{
+    const aboutRef = ref(db, 'aboutUs');
+    onValue(aboutRef, (snapshot) => {
+      
+      snapshot.forEach(item=>{
+        
+          upIdss(item.key)
+          console.log(item.key,"aUUUUUU")   
+      })  
     });
   },[])
   
 
   let handleUpdates = ()=>{
-      
-console.log("ami")
-    // update(ref(db, 'aboutUs/' + updateIds), {
-    //   aboutText: aboutValue
-    // })
 
-    // setOpen(false)
+    update(ref(db, 'aboutUs/' + setupIdss), {
+      aboutText: aboutValue
+    })
+
+    setOpens(false)
   }
 
  
@@ -194,11 +204,11 @@ console.log("ami")
       <div className='aboutEdit'> 
         <h1 className='aboutHeading'>About</h1>
 
-{about.length == 0 
-? 
+{about.length == []
+?  
 <button onClick={handleOpen} className='bio'>add bio</button>
 : 
-<MdEdit/> 
+<MdEdit onClick={handleOpens}/> 
 }
         
 
@@ -209,7 +219,7 @@ console.log("ami")
         {about.map(item=>(
           item.whoAboutID == data.uid &&
           <div className='ffffff'>
-        <p className='biosP'>Success is the state or condition of meeting a defined range of expectations. It may be viewed as the opposite of failure. The criteria for success depend on context</p>
+        <p className='biosP'>{item.aboutText}</p>
         {/* <MdEdit onClick={handleOpens}/> */}
         </div>
         ))}
@@ -249,7 +259,7 @@ console.log("ami")
             Edit Bios
           </Typography>
          
-          <TextField onChange={handleChangeAbout} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
+          <TextField onChange={handleChangeAbout} value={aboutValue} className='aboutInput' id="standard-basic" label="write someting" variant="standard" />
 
           <div className='aboutsendBtn'>
             <Button onClick={()=>setOpens(false)} variant="outlined">cancel</Button>
