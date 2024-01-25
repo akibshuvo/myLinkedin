@@ -172,7 +172,7 @@ setOpenss(true);
   }
 
   let handleAcppetgroup = (item)=>{
-    console.log(item,"ssssssssooooo")
+    
       set(push(ref(db, 'memberList')), {
        whoAccept: userInfo.uid,
        whoAcceptName: userInfo.displayName,
@@ -207,13 +207,13 @@ setOpenss(true);
     setOpens(true)
   }
   let handleOpensss = (item)=>{
-    console.log(item,"cliiii")
+ 
     const memberRef = ref(db, 'memberList');
     onValue(memberRef, (snapshot) => {
       let arr = []
       let arrs = []
       snapshot.forEach(items=>{
-        console.log(items.val(),"ggghh")
+        
         if(items.val().groupsId == item.groupsId && userInfo.uid == items.val().reqPeopleId){
           arr.push({...items.val(), memberIdss: items.key})
         } 
@@ -247,7 +247,7 @@ setOpenss(true);
         activaChatid: item.groupId
 
       }))
-       console.log(item,"jjjjjjhhh")
+      
 
 }
 

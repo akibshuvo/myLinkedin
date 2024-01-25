@@ -23,6 +23,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { activeChat } from '../slices/activeChatSlice'
+import { useDispatch } from 'react-redux'
 
 
 const style = {
@@ -49,12 +51,15 @@ const Mgs = () => {
   let userInfo = useSelector(state => state.activeChat.value)
   let data = useSelector(state=> state.logedUser.value)
 
+  let dispatch = useDispatch()
+
   let groupData = useSelector(state=> state.groupChat.value)
 
   let [mgs,setMgs] = useState("")
   let [mgsArr, setMgsArr] = useState([])
   let [groupMgsArr, setGroupMgsArr] = useState([])
   let [fArr, setmyFriendsarr] = useState([])
+  let [forwardMsg, setForword] = useState([])
   let [show,setshow] = useState(false)
   let [audios,setAudios] = useState("")
 
@@ -64,6 +69,65 @@ const Mgs = () => {
     setAudios(blob)
   };
   
+ 
+
+
+  useEffect(()=>{
+    const db = getDatabase();
+    const gmgsRef = ref(db, 'singleMassage');
+    onValue(gmgsRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+         
+         if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
+         || 
+        (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId)){
+           arr.push({...item.val(), msgIds: item.key})
+         }
+      })
+
+      setMgsArr(arr)
+    });
+  },[userInfo.activaChatid])
+
+  useEffect(()=>{
+    const db = getDatabase();
+    const mgsRef = ref(db, 'groupsMsg');
+    onValue(mgsRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+        
+        //  if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
+        //  || 
+        // (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId))
+        
+        // {
+          if(item.val().whoRevivedId == userInfo.activaChatid){
+            arr.push({...item.val(), gMsgIds: item.key})
+
+          }
+        //  }
+      })
+
+      setGroupMgsArr(arr)
+    });
+  },[userInfo.activaChatid])
+
+  useEffect(()=>{
+    const friendRef = ref(db, 'myFriends');
+    onValue(friendRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item=>{
+        if(data.uid == item.val().acceptId || data.uid == item.val().myFriendId){
+          arr.push({...item.val(), myFriensId: item.key})
+        }
+        
+      })
+      setmyFriendsarr(arr)
+    });
+  },[])
+
+
   let handleSendMgs = ()=>{
     if(userInfo.type == 'single'){
       set(push(ref(db, 'singleMassage')), {
@@ -93,53 +157,8 @@ const Mgs = () => {
     }
   }
 
-
-  useEffect(()=>{
-    const db = getDatabase();
-    const gmgsRef = ref(db, 'singleMassage');
-    onValue(gmgsRef, (snapshot) => {
-      let arr = []
-      snapshot.forEach(item=>{
-         
-         if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
-         || 
-        (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId)){
-           arr.push({...item.val(), msgIds: item.key})
-         }
-      })
-
-      setMgsArr(arr)
-    });
-  },[userInfo.activaChatid])
-
-  useEffect(()=>{
-    const db = getDatabase();
-    const mgsRef = ref(db, 'groupsMsg');
-    onValue(mgsRef, (snapshot) => {
-      let arr = []
-      snapshot.forEach(item=>{
-         console.log(item.val(),"jiiiiiiiiii")
-        //  if((data.uid == item.val().whosendId && userInfo.activaChatid == item.val().whoRevivedId) 
-        //  || 
-        // (data.uid == item.val().whoRevivedId && userInfo.activaChatid == item.val().whosendId))
-        
-        // {
-          if(item.val().whoRevivedId == userInfo.activaChatid){
-            arr.push({...item.val(), gMsgIds: item.key})
-
-          }
-        //  }
-      })
-
-      setGroupMgsArr(arr)
-    });
-  },[userInfo.activaChatid])
-
-
   let handleFile = (e)=>{
-    // console.log(e.target.files[0],"ooooo")
     const storageRef = imgref(storage, e.target.files[0].name);
-
     uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
         if(userInfo.type == 'single'){
@@ -169,7 +188,6 @@ const Mgs = () => {
 
   let handleAudioSend = (e)=>{
     const storageRef = imgref(storage, Date.now().toString());
-
     uploadBytes(storageRef,audios).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
 
@@ -200,40 +218,58 @@ const Mgs = () => {
 });
   }
 
-  
-  useEffect(()=>{
-    const friendRef = ref(db, 'myFriends');
-    onValue(friendRef, (snapshot) => {
-      let arr = []
-      snapshot.forEach(item=>{
-        if(data.uid == item.val().acceptId || data.uid == item.val().myFriendId){
-          arr.push({...item.val(), myFriensId: item.key})
-        }
-        
-      })
-      setmyFriendsarr(arr)
-    });
-  },[])
-
-  let handleOpen = (item)=>{
-      set(push(ref(db, 'forwardMgs')), {
-      ...item,
-
-      whoforward: data.displayName,
-      whoforwardId: data .uid
+  let handleOpenssss = (item)=>{
+    console.log(item,"aaaa")
+      set(push(ref(db, 'forwardsMgsss')), {
+      formgs: item.massage
     });
     setOpen(true)
   }
 
-  let handleFor = (item)=>{
+  let handleForwwwwwww = (item)=>{
+    const fmwwRef = ref(db, 'forwardsMgsss');
+    onValue(fmwwRef, (snapshot) => {
+     snapshot.forEach(items=>{
+      if(userInfo.type == 'single'){
+         set(push(ref(db, 'singleMassage')), {
+           whosendName: data.displayName,
+           whosendId: data.uid,
+     
+           whoRecivedName: item.myFriendsName,
+           whoRevivedId: item.myFriendId,
+           forwordMassage: items.val().formgs,
+           
+         });
+        }
+        console.log(items.val())
+       
+ })
+})
+
+// .then(()=>{
+//   if(data.uid == item.acceptId){
+//     dispatch(activeChat({
+//       type: "single",
+//       activaChatName: item.myFriendsName,
+//       activaChatid: item.myFriendId
+//     }))
+
+//   }else{
+//     dispatch(activeChat({
+//       type: "single",
+//       activaChatName: item.acceptName,
+//       activaChatid: item.acceptId
+//     }))
+//   }
+// })
+
+
+
+   
+  
     console.log(item,'MYYYY')
 
-    const fmRef = ref(db, 'forwardMgs');
-     onValue(fmRef, (snapshot) => {
-      snapshot.forEach(items=>{
-        console.log(items.val(),"kkkkkkk")
-  })
-});
+  
   }
 
 
@@ -299,16 +335,29 @@ const Mgs = () => {
 
             items.massage? 
              items.whosendId == data.uid
-             ? <div className='sendmgs'>
+             ? 
+             <div className='sendmgs'>
              <p>{items.massage}</p>
              {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
-             
            </div>
+                  
+              
+
              :<div className='recivedMgs'>
              <p>{items.massage}</p>
              {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
            </div>
-            :
+            : items.forwordMassage? 
+            items.whosendId == data.uid?
+            <div className='sendmgs'>
+             <p>{items.forwordMassage}</p>
+             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+           </div>
+            : <div className='recivedMgs'>
+            <p>{items.forwordMassage}</p>
+            {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
+          </div>
+          :
             items.audios
             ? 
             items.whosendId == data.uid
@@ -338,8 +387,7 @@ const Mgs = () => {
              />        
              {/* <span>{moment(items.date, "YYYYMMDD hh:mm").fromNow()}</span> */}
           </div>
-          
-           
+ 
           ))
           : groupMgsArr.map(items=>(
             items.massage? 
@@ -360,7 +408,7 @@ const Mgs = () => {
             <p>{items.massage}</p>
             {/* <span>{moment(items.data, "YYYYMMDD hh:mm").fromNow()}</span> */}
           </div>
-          <IoIosShareAlt onClick={()=>handleOpen(items)} className='forword'/>
+          <IoIosShareAlt onClick={()=>handleOpenssss(items)} className='forword'/>
           </div>
           
           </>
@@ -463,7 +511,7 @@ const Mgs = () => {
                 <p>Apps Developer</p>
                 </div>
             </div>
-            <button onClick={()=>handleFor(item)}>forward</button>
+            <button onClick={()=>handleForwwwwwww(item)}>forward</button>
             </div>
           ))}
           
