@@ -227,22 +227,21 @@ const Mgs = () => {
   }
 
   let handleForwwwwwww = (item)=>{
+    console.log(item,"my")
     const fmwwRef = ref(db, 'forwardsMgsss');
     onValue(fmwwRef, (snapshot) => {
      snapshot.forEach(items=>{
-      if(userInfo.type == 'single'){
+      
          set(push(ref(db, 'singleMassage')), {
-           whosendName: data.displayName,
-           whosendId: data.uid,
+           whosendName: item.displayName,
+           whosendId: item.acceptName,
      
            whoRecivedName: item.myFriendsName,
            whoRevivedId: item.myFriendId,
            forwordMassage: items.val().formgs,
            
          });
-        }
-        console.log(items.val())
-       
+         
  })
 })
 
@@ -263,13 +262,6 @@ const Mgs = () => {
 //   }
 // })
 
-
-
-   
-  
-    console.log(item,'MYYYY')
-
-  
   }
 
 
